@@ -18,5 +18,8 @@
     "node-telegram-bot-api": "^0.64.0",
     "telegraf": "^4.15.3",
     "ytdl-core": "^4.11.5"
+  },
+  "engines": {
+    "node": ">=18.17.0 <18.18.0"
   }
 }
