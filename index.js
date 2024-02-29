@@ -11,7 +11,7 @@ const {TOKEN, SERVER_URL} = process.env;
 // const app = express();
 // const port = 4040;
 
-const { handler, telegramApiHandler } = require('./controller');
+const {  telegramApiHandler } = require('./controller');
 // app.use(express.json());
 
 const bot = new TelegramBot(TOKEN, {polling: true});
@@ -19,8 +19,8 @@ const bot = new TelegramBot(TOKEN, {polling: true});
 
 bot.on('message',async (msg)=>
 {
-    console.log(msg);
-    telegramApiHandler(msg,'message',bot)
+  
+    telegramApiHandler(msg,bot)
     // handler(msg);
     // bot.sendMessage(msg.chat.id, 'text de teste').catch((error) => {
     //     console.log(error.code);  // => 'ETELEGRAM'
@@ -29,8 +29,8 @@ bot.on('message',async (msg)=>
 } )
 bot.on('callback_query',async (msg)=>
 {
-    console.log(msg);
-    telegramApiHandler(msg,'callback',bot)
+  
+    telegramQuerryHandler(msg)
     // handler(msg);
     // bot.sendMessage(msg.chat.id, 'text de teste').catch((error) => {
     //     console.log(error.code);  // => 'ETELEGRAM'

@@ -1,43 +1,43 @@
 const fs = require('fs');
 const ytld = require('ytdl-core')
-const { axiosInstance } = require("./axios");
+// const { axiosInstance } = require("./axios");
 
 
-function sendMessage(messsagObj,messageText)
-{
-    return axiosInstance.get("sendMessage",{
-        chat_id: messsagObj.chat.id,
-        text: messageText,
+// function sendMessage(messsagObj,messageText)
+// {
+//     return axiosInstance.get("sendMessage",{
+//         chat_id: messsagObj.chat.id,
+//         text: messageText,
 
-    })
-}
-function sendPhoto(messsagObj,result,inlineKey)
-{
-    return axiosInstance.get("sendPhoto",{
-        chat_id: messsagObj.chat.id,
-        photo: result.videoDetails.thumbnails[0].url,
-        caption: result.videoDetails.title,
-        reply_markup: JSON.stringify({
-            inline_keyboard: [
-            /* Inline buttons. 2 side-by-side */
-            // [ { text: "Button 1", callback_data: "btn-1" }, { text: "Button 2", callback_data: "btn-2" } ],
-            inlineKey,
-            /* One button */
-            // [ { text: "Next", callback_data: "next" } ],
+//     })
+// }
+// function sendPhoto(messsagObj,result,inlineKey)
+// {
+//     return axiosInstance.get("sendPhoto",{
+//         chat_id: messsagObj.chat.id,
+//         photo: result.videoDetails.thumbnails[0].url,
+//         caption: result.videoDetails.title,
+//         reply_markup: JSON.stringify({
+//             inline_keyboard: [
+//             /* Inline buttons. 2 side-by-side */
+//             // [ { text: "Button 1", callback_data: "btn-1" }, { text: "Button 2", callback_data: "btn-2" } ],
+//             inlineKey,
+//             /* One button */
+//             // [ { text: "Next", callback_data: "next" } ],
             
-            /* Also, we can have URL buttons. */
-            // [ { text: "Open in browser", url: "telegraf.js.org" } ]
-                            ]})
+//             /* Also, we can have URL buttons. */
+//             // [ { text: "Open in browser", url: "telegraf.js.org" } ]
+//                             ]})
 
-    })
-}
-function deleteMessage(messsagObj,msgid)
-{
-    return axiosInstance.get("deleteMessage",{
-        chat_id: messsagObj.chat.id,
-        message_id:  msgid
-    }) 
-}
+//     })
+// }
+// function deleteMessage(messsagObj,msgid)
+// {
+//     return axiosInstance.get("deleteMessage",{
+//         chat_id: messsagObj.chat.id,
+//         message_id:  msgid
+//     }) 
+// }
 
 async function handleMessage(messageObj,botInstance)
 {
@@ -95,7 +95,7 @@ async function handleMessage(messageObj,botInstance)
     else
     {
         let firstLetters = messageText.slice(0,4)
-        console.log(firstLetters)
+     
         // return "OC";
         if(firstLetters == 'http')
         {
@@ -106,7 +106,7 @@ async function handleMessage(messageObj,botInstance)
 
                 const videoFormatsArr = getVideoFormats(stream2);
                 botInstance.deleteMessage(messageObj.chat.id,loadingmessageID);
-                console.log(stream2.formats);
+              
                 setTimeout(()=>
                 {
                     // console.log(stream2.videoDetails)
@@ -176,7 +176,7 @@ function getVideoFormats(videoInfo)
 
         return result;
 }
-async function handleQuerry(messageObj,botInstance)
+async function handleQuerry(messageObj)
 {
     const messageText = messageObj.text || "";
     let loadingmessageID = messageObj.message_id + 1;
@@ -200,7 +200,7 @@ async function handleQuerry(messageObj,botInstance)
                `
 
             deleteMessage(messageObj,loadingmessageID);
-            console.log(stream2.videoDetails.thumbnails[4]);
+          
             setTimeout(()=>
             {
                 sendPhoto(messageObj,stream2)
@@ -216,7 +216,7 @@ async function handleQuerry(messageObj,botInstance)
     else
     {
         
-        console.log(messageObj);
+      
         sendMessage(messageObj,'erreure cest produite')
 
     }
