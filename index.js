@@ -1,18 +1,18 @@
 require('dotenv').config();
-const axios = require('axios');
+// const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const {TOKEN, SERVER_URL} = process.env;
-const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
+// const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
 
 
 
 
-const express = require('express');
-const app = express();
-const port = 4040;
+// const express = require('express');
+// const app = express();
+// const port = 4040;
 
 const { handler, telegramApiHandler } = require('./controller');
-app.use(express.json());
+// app.use(express.json());
 
 const bot = new TelegramBot(TOKEN, {polling: true});
 
@@ -20,7 +20,7 @@ const bot = new TelegramBot(TOKEN, {polling: true});
 bot.on('message',async (msg)=>
 {
     console.log(msg);
-    telegramApiHandler(msg,'message')
+    telegramApiHandler(msg,'message',bot)
     // handler(msg);
     // bot.sendMessage(msg.chat.id, 'text de teste').catch((error) => {
     //     console.log(error.code);  // => 'ETELEGRAM'
@@ -30,7 +30,7 @@ bot.on('message',async (msg)=>
 bot.on('callback_query',async (msg)=>
 {
     console.log(msg);
-    telegramApiHandler(msg,'callback')
+    telegramApiHandler(msg,'callback',bot)
     // handler(msg);
     // bot.sendMessage(msg.chat.id, 'text de teste').catch((error) => {
     //     console.log(error.code);  // => 'ETELEGRAM'
@@ -51,3 +51,4 @@ bot.on('callback_query',async (msg)=>
 //     console.log(`Example app listening on port ${port}`)
     
 //   })
+

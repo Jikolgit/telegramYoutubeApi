@@ -26,17 +26,17 @@ async function handler(req)
     return;
 }
 
-async function telegramApiHandler(req,type)
+async function telegramApiHandler(req,type,botInstance)
 {
     const messageObj = req;
     // console.log(messageObj);
     if(type == "message")
     {
-        await handleMessage(messageObj);
+        await handleMessage(messageObj,botInstance);
     }
     else if(type == "callback")
     {
-        await handleQuerry(messageObj);
+        await handleQuerry(messageObj,botInstance);
     }
     return;
 }

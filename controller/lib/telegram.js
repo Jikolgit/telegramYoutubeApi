@@ -2,6 +2,7 @@ const fs = require('fs');
 const ytld = require('ytdl-core')
 const { axiosInstance } = require("./axios");
 
+
 function sendMessage(messsagObj,messageText)
 {
     return axiosInstance.get("sendMessage",{
@@ -14,7 +15,7 @@ function sendPhoto(messsagObj,result,inlineKey)
 {
     return axiosInstance.get("sendPhoto",{
         chat_id: messsagObj.chat.id,
-        photo: result.videoDetails.thumbnails[4].url,
+        photo: result.videoDetails.thumbnails[0].url,
         caption: result.videoDetails.title,
         reply_markup: JSON.stringify({
             inline_keyboard: [
@@ -38,7 +39,7 @@ function deleteMessage(messsagObj,msgid)
     }) 
 }
 
-async function handleMessage(messageObj)
+async function handleMessage(messageObj,botInstance)
 {
     const messageText = messageObj.text || "";
     let loadingmessageID = messageObj.message_id + 1;
@@ -50,7 +51,10 @@ async function handleMessage(messageObj)
 
         if(command == "start")
         {
-            sendMessage(messageObj,"Send your Youtube Link to get your download Link.");
+
+            botInstance.sendMessage(messageObj.chat.id,"Send your Youtube Link to get your download Link.")
+            // sendMessage(messageObj,"Send your Youtube Link to get your download Link.");
+
             // return sendMessage(messageObj," salut vous avez appuyé start");
             // const vinfo = await ytld.getInfo('http://www.youtube.com/watch?v=aqz-KE-bpKQ');
             // let streamObj = ytld('https://www.youtube.com/watch?v=1aBqUNyN_Ko'); https://www.youtube.com/watch?v=rJzOv3cgfck
@@ -83,9 +87,9 @@ async function handleMessage(messageObj)
             
 
         }
-        else if(command == "inline")
+        else
         {
-
+            botInstance.sendMessage(messageObj.chat.id,"Send your Youtube Link to get your download Link.")
         }
     }
     else
@@ -97,15 +101,20 @@ async function handleMessage(messageObj)
         {
             
             try {
-                sendMessage(messageObj,"veuillez patienter.....");
+                botInstance.sendMessage(messageObj.chat.id,"veuillez patienter.....");
                 let stream2 = await ytld.getInfo(messageText);
 
                 const videoFormatsArr = getVideoFormats(stream2);
-                deleteMessage(messageObj,loadingmessageID);
+                botInstance.deleteMessage(messageObj.chat.id,loadingmessageID);
                 console.log(stream2.formats);
                 setTimeout(()=>
                 {
-                    sendPhoto(messageObj,stream2,videoFormatsArr)
+                    // console.log(stream2.videoDetails)
+                    botInstance.sendPhoto(messageObj.chat.id,stream2.videoDetails.thumbnails[4].url,
+                       {caption:stream2.videoDetails.title,
+                        reply_markup:JSON.stringify({
+                            inline_keyboard: [videoFormatsArr,]})} )
+                    // sendPhoto(messageObj,stream2,videoFormatsArr)
                 
                     
                 },1000)
@@ -113,10 +122,11 @@ async function handleMessage(messageObj)
                 
                 
                 setTimeout(()=>{
-                    deleteMessage(messageObj,loadingmessageID);
+                    botInstance.deleteMessage(messageObj.chat.id,loadingmessageID);
                 },500)
                 setTimeout(()=>{
-                    sendMessage(messageObj,"Please send a valid Youtube link 🙏");
+                    botInstance.sendMessage(messageObj.chat.id,"Please send a valid Youtube link 🙏");
+                    // sendMessage(messageObj,"Please send a valid Youtube link 🙏");
                 },1000)
                 
                 // console.log("Error Please send a valid Youtube link 🙏")
@@ -125,7 +135,8 @@ async function handleMessage(messageObj)
         }
         else
         {
-            sendMessage(messageObj,'Please send a valid Youtube link 🙏')
+            botInstance.sendMessage(messageObj.chat.id,'Please send a valid Youtube link 🙏')
+            // sendMessage(messageObj,'Please send a valid Youtube link 🙏')
         }
         // console.log(messageObj);
         
@@ -165,7 +176,7 @@ function getVideoFormats(videoInfo)
 
         return result;
 }
-async function handleQuerry(messageObj)
+async function handleQuerry(messageObj,botInstance)
 {
     const messageText = messageObj.text || "";
     let loadingmessageID = messageObj.message_id + 1;
