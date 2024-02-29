@@ -19,7 +19,8 @@ const bot = new TelegramBot(TOKEN, {polling: true});
 
 bot.on('message',async (msg)=>
 {
-  
+    // bot.deleteWebHook()
+    // console.log(bot.getWebHookInfo())
     telegramApiHandler(msg,bot)
     // handler(msg);
     // bot.sendMessage(msg.chat.id, 'text de teste').catch((error) => {
