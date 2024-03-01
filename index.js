@@ -1,7 +1,7 @@
-require('dotenv').config();
+// require('dotenv').config();
 // const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
-const {TOKEN} = process.env;
+const TOKEN = '7098401882:AAGrbBJfbgd_MgLZRnxlGXbmT3CXyyH3WtQ';
 // const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
 
 
